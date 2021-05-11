@@ -1,6 +1,6 @@
 import { sep } from 'path';
 import { Express } from 'express';
-import { Kernel } from '../Kernel';
+import { Kernel } from '../foundation';
 import * as handlebars from 'express-handlebars';
 
 export class Template {
