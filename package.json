@@ -1,12 +1,12 @@
 {
     "name": "@hardjs/core",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Core of HardJS",
     "scripts": {
         "build": "tsc && gulp build",
         "lint": "eslint \"{src,test}/**/*.ts\" --fix",
-        "publish": "tsc && gulp build && npm publish --access public",
-        "publish:alpha": "tsc && gulp build && npm publish --tag=alpha --access public"
+        "publish": "tsc && gulp build && cd node_modules/@hardjs && npm publish --access public",
+        "publish:beta": "tsc && gulp build && cd node_modules/@hardjs && npm publish --tag=beta --access public"
     },
     "author": "Pavel Korshunov",
     "license": "ISC",
