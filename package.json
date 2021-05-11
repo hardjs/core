@@ -1,6 +1,6 @@
 {
     "name": "@hardjs/core",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Core of HardJS",
     "scripts": {
         "build": "tsc && gulp build",
