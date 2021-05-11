@@ -1,11 +1,11 @@
 {
     "name": "@hardjs/core",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Core of HardJS",
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && gulp build",
         "lint": "eslint \"{src,test}/**/*.ts\" --fix",
-        "publish:beta": "tsc && npm publish --tag=beta --access public"
+        "publish:alpha": "tsc && gulp build && npm publish --tag=alpha --access public"
     },
     "author": "Pavel Korshunov",
     "license": "ISC",
@@ -33,6 +33,7 @@
         "eslint": "^7.24.0",
         "eslint-config-prettier": "^8.1.0",
         "eslint-plugin-prettier": "^3.3.1",
+        "gulp": "^4.0.2",
         "prettier": "^2.2.1"
     }
 }

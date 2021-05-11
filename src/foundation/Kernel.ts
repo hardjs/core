@@ -1,7 +1,7 @@
 import * as express from 'express';
-import { Router } from './routing';
-import { Template } from './template';
-import { Container } from './dependency';
+import { Router } from '../routing';
+import { Template } from '../template';
+import { Container } from '../dependency';
 import { IKernel } from './interfaces';
 
 export abstract class Kernel implements IKernel<Kernel> {
