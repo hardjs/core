@@ -1,1 +1,1 @@
-export { Template } from './Template';
+export { HandlebarsBundle } from './HandlebarsBundle';

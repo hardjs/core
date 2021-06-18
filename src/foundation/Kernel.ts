@@ -1,35 +1,77 @@
 import * as express from 'express';
+import { Bundle } from './Bundle';
+import { Config } from '../config';
 import { Router } from '../routing';
-import { Template } from '../template';
-import { Container } from '../dependency';
 import { IKernel } from './interfaces';
+import { Filesystem } from '../filesystem';
+import { Container, IContainer } from '../dependency';
 
 export abstract class Kernel implements IKernel<Kernel> {
     protected app;
+    protected config;
+    protected appRoot;
+    protected srcFolder = 'src';
+    protected container: IContainer;
+    protected fileSystem: Filesystem;
     protected readonly version: string = '1.0.0';
 
     protected constructor() {
-        this.initializeContainer();
-        this.initializeKernel();
+        this.container = Container;
+        this.initializeApplication();
+        this.fileSystem = new Filesystem();
     }
 
-    abstract initializeKernel(): void;
-    abstract loadRoute(): void;
+    public abstract initializeKernel(): void;
+    public abstract loadRoute(controllers: Map<string, any>): void;
 
-    private initializeContainer(): void {
-        Container.set('app', express());
-        this.app = Container.get('app');
+    private initializeApplication(): void {
+        this.app = express();
+        this.container.set('app', this.app);
     }
 
     public async handle(): Promise<Kernel> {
+        if (!this.appRoot) {
+            throw new Error(
+                'Cannot start http server, make sure to register the app root inside index.ts file',
+            );
+        }
+
+        this.initializeKernel();
+        this.initializeConfig();
+        await this.initializeBundles();
+
         this.app.disable('x-powered-by');
         await Router.create().init();
         return this;
     }
 
-    public enableViews(): Kernel {
-        Template.create(this.app).init();
-        return this;
+    private initializeConfig(): void {
+        this.config = new Config();
+        this.container.set('config', this.config);
+    }
+
+    private async initializeBundles(): Promise<void | Error> {
+        const bundles = this.config.get('application.bundles');
+        if (bundles && bundles.length > 0) {
+            for (const bundle of bundles) {
+                const path =
+                    this.appRoot + this.fileSystem.separator() + bundle + '.js';
+                const fileBundle = this.fileSystem.includeFile(path);
+
+                if (fileBundle === null || typeof fileBundle !== 'object')
+                    return;
+
+                const bundleName = Object.keys(fileBundle).shift();
+                const bundleObject = new fileBundle[bundleName]();
+                if (bundleObject instanceof Bundle) {
+                    await bundleObject.boot(this.container);
+                } else {
+                    throw new Error(
+                        `${bundleName} class must extends abstract class Bundle`,
+                    );
+                }
+            }
+        }
     }
 
     public listen(port: number): void {
@@ -42,7 +84,16 @@ export abstract class Kernel implements IKernel<Kernel> {
         return this.version;
     }
 
-    public static rootFolder(): string {
-        return process.cwd();
+    public setAppRoot(folder: string): Kernel {
+        this.appRoot = folder;
+        return this;
+    }
+
+    public getAppRoot(): string {
+        return this.appRoot;
+    }
+
+    public getSrcFolder() {
+        return this.getAppRoot() + this.fileSystem.separator() + this.srcFolder;
     }
 }
