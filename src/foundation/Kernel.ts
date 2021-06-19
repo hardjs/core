@@ -11,6 +11,7 @@ export abstract class Kernel implements IKernel<Kernel> {
     protected config;
     protected appRoot;
     protected srcFolder = 'src';
+    protected package = '@hardjs';
     protected container: IContainer;
     protected fileSystem: Filesystem;
     protected readonly version: string = '1.0.0';
@@ -54,12 +55,18 @@ export abstract class Kernel implements IKernel<Kernel> {
         const bundles = this.config.get('application.bundles');
         if (bundles && bundles.length > 0) {
             for (const bundle of bundles) {
+                const isModule = bundle.search(this.package);
                 const path =
                     this.appRoot + this.fileSystem.separator() + bundle + '.js';
-                const fileBundle = this.fileSystem.includeFile(path);
 
-                if (fileBundle === null || typeof fileBundle !== 'object')
-                    return;
+                let fileBundle = this.fileSystem.includeFile(path);
+                if (isModule !== -1) {
+                    fileBundle = this.fileSystem.includeModule(bundle);
+                }
+
+                if (fileBundle === null || typeof fileBundle !== 'object') {
+                    continue;
+                }
 
                 const bundleName = Object.keys(fileBundle).shift();
                 const bundleObject = new fileBundle[bundleName]();

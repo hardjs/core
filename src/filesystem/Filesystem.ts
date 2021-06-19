@@ -11,6 +11,11 @@ export class Filesystem {
         return null;
     }
 
+    public includeModule(module: string): any {
+        // TODO if exist module
+        return require(module);
+    }
+
     public realPath(filePath: string): string {
         return this.replaceAll(filePath, '/', path.sep);
     }
