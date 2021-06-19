@@ -1,3 +1,3 @@
 # Hardjs
 
-Node.js framework
+Core of hardjs framework
