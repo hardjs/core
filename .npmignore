@@ -4,6 +4,7 @@
 # source
 **/*.ts
 *.ts
+*.js.map
 
 # definitions
 !**/*.d.ts
