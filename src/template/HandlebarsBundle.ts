@@ -20,16 +20,11 @@ export class HandlebarsBundle extends Bundle {
 
     private init(): void {
         this.app.set('views', this.templateFolder());
-        this.app.engine(
-            'hbs',
-            handlebars({ defaultLayout: 'base', extname: '.hbs' }),
-        );
+        this.app.engine('hbs', handlebars({ defaultLayout: 'base', extname: '.hbs' }));
         this.app.set('view engine', 'hbs');
     }
 
     private templateFolder(): string {
-        return (
-            this.kernel.getAppRoot() + sep + '..' + sep + this.folders.templates
-        );
+        return this.kernel.getAppRoot() + sep + '..' + sep + this.folders.templates;
     }
 }

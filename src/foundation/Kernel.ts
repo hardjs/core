@@ -32,9 +32,7 @@ export abstract class Kernel implements IKernel<Kernel> {
 
     public async handle(): Promise<Kernel> {
         if (!this.appRoot) {
-            throw new Error(
-                'Cannot start http server, make sure to register the app root inside index.ts file',
-            );
+            throw new Error('Cannot start http server, make sure to register the app root inside index.ts file');
         }
 
         this.initializeKernel();
@@ -56,8 +54,7 @@ export abstract class Kernel implements IKernel<Kernel> {
         if (bundles && bundles.length > 0) {
             for (const bundle of bundles) {
                 const isModule = bundle.search(this.package);
-                const path =
-                    this.appRoot + this.fileSystem.separator() + bundle + '.js';
+                const path = this.appRoot + this.fileSystem.separator() + bundle + '.js';
 
                 let fileBundle = this.fileSystem.includeFile(path);
                 if (isModule !== -1) {
@@ -73,9 +70,7 @@ export abstract class Kernel implements IKernel<Kernel> {
                 if (bundleObject instanceof Bundle) {
                     await bundleObject.boot(this.container);
                 } else {
-                    throw new Error(
-                        `${bundleName} class must extends abstract class Bundle`,
-                    );
+                    throw new Error(`${bundleName} class must extends abstract class Bundle`);
                 }
             }
         }
