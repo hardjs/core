@@ -14,8 +14,7 @@ export class Router {
         this.kernel = Container.get('kernel');
         this.mapControllers = new Map();
         this.fileSystem = new Filesystem();
-        this.controllerPath =
-            this.kernel.getSrcFolder() + sep + this.controllerFolder;
+        this.controllerPath = this.kernel.getSrcFolder() + sep + this.controllerFolder;
     }
 
     public static create(): Router {
