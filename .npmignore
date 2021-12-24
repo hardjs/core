@@ -1,5 +1,6 @@
 # folders
 /.idea
+/tests
 
 # source
 **/*.ts
@@ -18,3 +19,4 @@ gulpfile.js
 tslint.json
 tsconfig.json
 package-lock.json
+jest.config.json
