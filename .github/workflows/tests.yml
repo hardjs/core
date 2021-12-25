@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  check-bats-version:
+  linux_tests:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
