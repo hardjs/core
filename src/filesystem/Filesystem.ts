@@ -12,7 +12,7 @@ export class Filesystem {
     }
 
     public includeModule(module: string): any {
-        // TODO if exist module
+        // TODO if exist module and not require symbolic link (MUST require)
         return require(module);
     }
 
